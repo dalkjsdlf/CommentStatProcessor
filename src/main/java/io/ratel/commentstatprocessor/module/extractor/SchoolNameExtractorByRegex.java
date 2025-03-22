@@ -1,7 +1,5 @@
 package io.ratel.commentstatprocessor.module.extractor;
 
-import io.ratel.commentstatprocessor.module.CommentPreprocessor;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package io.ratel.commentstatprocessor.module;
+package io.ratel.commentstatprocessor.module.extractor;
 
 /**
  * packageName  : io.ratel.commentstatprocessor.module
