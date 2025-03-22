@@ -1,6 +1,5 @@
-package io.ratel.commentstatprocessor.module.Extractor;
+package io.ratel.commentstatprocessor.module.extractor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

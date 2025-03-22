@@ -1,10 +1,9 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.module.Extractor.SchoolNameExtractor;
-import io.ratel.commentstatprocessor.module.Extractor.SchoolNameExtractorByRegex;
+import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractor;
+import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractorByRegex;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
@@ -154,7 +153,7 @@ public class SchoolNameExtractorTest {
     private static Stream<Arguments> selectCase(String caseNumber) {
         System.out.println();
         return provideCommentsAndExpectedSchools()
-                .filter(args -> caseNumber.equals((String)args.get()[0]))
+                .filter(args -> caseNumber.equals(args.get()[0]))
                 .map(args -> Arguments.of(args.get()[1], args.get()[2]));
     }
 
