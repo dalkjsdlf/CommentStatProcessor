@@ -31,20 +31,15 @@ public class CommentStatProcessor {
     }
 
     public void aggregateSchoolCounts(String inputPath, String outputPath, String logPath, boolean overwrite) {
-        CommentFileReader fileReader = new CommentFileReader();
-        File file = fileReader.read(inputPath);
-
-        CSVCommentReader commentReader = new CSVCommentReader();
-        List<String> comments = commentReader.read(file);
+        List<String> comments = CSVCommentReader.read(inputPath);
 
         SchoolStatCounter counter = new SchoolStatCounter();
         for (String comment : comments) {
             counter.countSchools(comment);
         }
 
-        String result = counter.statMapToText();
+        String result = SchoolStatContext.statMapToString();
 
-        CommentFileWriter writer = new CommentFileWriter();
-        writer.write(result, outputPath, overwrite);
+        CommentFileWriter.writeTextFile(outputPath,result, overwrite);
     }
 }
