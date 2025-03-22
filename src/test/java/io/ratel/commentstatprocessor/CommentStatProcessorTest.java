@@ -1,7 +1,7 @@
 package io.ratel.commentstatprocessor;
 
 import io.ratel.commentstatprocessor.module.CommentStatProcessor;
-import io.ratel.commentstatprocessor.module.SchoolStatContext;
+import io.ratel.commentstatprocessor.module.context.SchoolStatContext;
 import io.ratel.commentstatprocessor.module.reader.CSVCommentReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

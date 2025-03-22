@@ -1,7 +1,6 @@
-package io.ratel.commentstatprocessor.module;
+package io.ratel.commentstatprocessor.module.context;
 
 import java.util.Map;
-import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
