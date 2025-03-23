@@ -1,7 +1,5 @@
 package io.ratel.commentstatprocessor.module.context;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -16,7 +14,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * ================================================
  * 2025. 3. 22.          dorris             최초생성
  */
-@Slf4j
 public class SchoolStatContext {
     private static final Map<String, Integer> schoolCountMap = new ConcurrentHashMap<>();
 
@@ -40,10 +37,12 @@ public class SchoolStatContext {
     }
 
     public static void displayMap() {
+        System.out.println();
         for(String schoolName : schoolCountMap.keySet()) {
             int count = schoolCountMap.get(schoolName);
-            log.debug("{}\t{}",schoolName, count);
+            System.out.printf("%s\t%d \n", schoolName, count);
         }
+        System.out.println();
     }
 
     public static void clear() {
