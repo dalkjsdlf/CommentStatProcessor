@@ -32,7 +32,8 @@ public class SchoolStatCounter {
         for (String school : schools) {
             log.debug("학교이름 > {}",school);
         }
-        System.out.println();
+
+        log.debug("\n");
         log.debug("============================================================");
         for (String school : schools) {
             SchoolStatContext.put(school);
