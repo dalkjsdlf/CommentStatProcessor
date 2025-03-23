@@ -1,4 +1,4 @@
-package io.ratel.commentstatprocessor.module.extractor;
+package io.ratel.commentstatprocessor.domain.schoolstat.extractor;
 
 import java.util.ArrayList;
 import java.util.HashMap;

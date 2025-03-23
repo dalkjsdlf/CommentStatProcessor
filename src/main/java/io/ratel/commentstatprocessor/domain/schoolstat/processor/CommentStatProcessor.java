@@ -1,10 +1,9 @@
-package io.ratel.commentstatprocessor.module;
+package io.ratel.commentstatprocessor.domain.schoolstat.processor;
 
-import io.ratel.commentstatprocessor.module.context.SchoolStatContext;
-import io.ratel.commentstatprocessor.module.file.CommentFileWriter;
-import io.ratel.commentstatprocessor.module.reader.CSVCommentReader;
+import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
+import io.ratel.commentstatprocessor.common.file.FileWriter;
+import io.ratel.commentstatprocessor.domain.schoolstat.reader.CSVCommentReader;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 
@@ -20,7 +19,6 @@ import java.util.List;
  * 2025. 3. 21.          dorris             최초생성
  */
 @Slf4j
-@Component
 public class CommentStatProcessor {
 
     public void countSchoolsInComments(List<String> comments) {
@@ -65,7 +63,7 @@ public class CommentStatProcessor {
         /*
          * 카운팅 결과 출력
          * */
-        SchoolStatContext.displayMap();
+        SchoolStatResultStore.displayMap();
         log.debug("==================================================");
 
         /*
@@ -75,7 +73,7 @@ public class CommentStatProcessor {
         log.debug("학교명 통계 데이터 포멧 변경 : Map to String");
         log.debug("포멧 : [학교명]\t[건수]");
         log.debug("==================================================");
-        String result = SchoolStatContext.statMapToString();
+        String result = SchoolStatResultStore.statMapToString();
 
         /*
          * 산출된 Count 통계 자료 내용 파일로 저장
@@ -85,6 +83,6 @@ public class CommentStatProcessor {
         log.debug("저장 파일경로 : {}",outputPath);
         log.debug("덮어쓰기 여부 : {}",overwrite);
         log.debug("==================================================");
-        CommentFileWriter.writeTextFile(outputPath,result, overwrite);
+        FileWriter.writeTextFile(outputPath,result, overwrite);
     }
 }

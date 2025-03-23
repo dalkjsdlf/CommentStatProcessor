@@ -1,7 +1,7 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.module.context.SchoolStatContext;
-import io.ratel.commentstatprocessor.module.SchoolStatCounter;
+import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
+import io.ratel.commentstatprocessor.domain.schoolstat.processor.SchoolStatCounter;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -35,7 +35,7 @@ public class SchoolStatCounterTest {
     @DisplayName("[성공] List에 있는 학교명의 개수를 세주는 기능")
     @Test
     public void givenComment_whenCountSchools_thenStatMap(){
-        SchoolStatContext.clear();
+        SchoolStatResultStore.clear();
 
         //given
         // 공백, 특수문자, 약어 커버됨
@@ -44,7 +44,7 @@ public class SchoolStatCounterTest {
         //when
         schoolStatCounter.countSchools(comment);
 
-        Map<String, Integer> map = SchoolStatContext.getMap();
+        Map<String, Integer> map = SchoolStatResultStore.getMap();
         // then
         // 충암고등학교 3 ,서울대학교 2, 연세대학교2, 고려대학교1, 부산대학교1
         assertThat(map.get("충암고등학교")).isEqualTo(3);

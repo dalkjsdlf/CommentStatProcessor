@@ -1,15 +1,16 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.module.CommentStatProcessor;
-import io.ratel.commentstatprocessor.module.context.SchoolStatContext;
-import io.ratel.commentstatprocessor.module.reader.CSVCommentReader;
+import io.ratel.commentstatprocessor.domain.schoolstat.processor.CommentStatProcessor;
+import io.ratel.commentstatprocessor.common.constant.AppConst;
+import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
+import io.ratel.commentstatprocessor.domain.schoolstat.reader.CSVCommentReader;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -52,8 +53,8 @@ public class CommentStatProcessorTest {
 
         //when
         commentStatProcessor.countSchoolsInComments(comments);
-        SchoolStatContext.displayMap();
-        int count = SchoolStatContext.getCount(schoolNameForValidation);
+        SchoolStatResultStore.displayMap();
+        int count = SchoolStatResultStore.getCount(schoolNameForValidation);
 
         //then
         assertThat(count).isEqualTo(6);
@@ -65,14 +66,14 @@ public class CommentStatProcessorTest {
         //given
 
         String schoolNameForValidation = "창현고등학교";
-        ClassPathResource resource = new ClassPathResource("comments.csv");
-        File file = resource.getFile();
+        String inputFilePath = AppConst.DEFAULT_INPUT_DIR + File.separator + AppConst.DEFAULT_INPUT_FILE_NAME;
+        File file = Path.of(inputFilePath).toFile();
         //when
         List<String> commentsFromCsv = CSVCommentReader.read(file.getPath());
         //when
         commentStatProcessor.countSchoolsInComments(commentsFromCsv);
-        SchoolStatContext.displayMap();
-        int count = SchoolStatContext.getCount(schoolNameForValidation);
+        SchoolStatResultStore.displayMap();
+        int count = SchoolStatResultStore.getCount(schoolNameForValidation);
 
         //then
         assertThat(count).isEqualTo(1);
