@@ -1,11 +1,10 @@
-package io.ratel.commentstatprocessor.module.reader;
+package io.ratel.commentstatprocessor.domain.schoolstat.extractor;
 
-import java.io.File;
 import java.util.List;
 
 /**
  * packageName  : io.ratel.commentstatprocessor.module
- * fileName    : CommentReader
+ * fileName    : SchoolNameExtractor
  * author      : dorris
  * date        : 2025. 3. 21.
  * description :
@@ -14,6 +13,7 @@ import java.util.List;
  * ================================================
  * 2025. 3. 21.          dorris             최초생성
  */
-public interface CommentReader {
-    List<String> read(String filePath);
+public interface SchoolNameExtractor {
+
+    List<String> execute(String comment);
 }

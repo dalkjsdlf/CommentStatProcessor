@@ -1,13 +1,12 @@
-package io.ratel.commentstatprocessor.module.file;
+package io.ratel.commentstatprocessor.common.file;
+
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorErrorCode;
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorException;
 
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.util.List;
 
 /**
  * packageName  : io.ratel.commentstatprocessor.module
@@ -20,7 +19,7 @@ import java.util.List;
  * ================================================
  * 2025. 3. 21.          dorris             최초생성
  */
-public class CommentFileWriter {
+public class FileWriter {
     /**
      * 텍스트 파일을 씁니다.
      *
@@ -40,10 +39,10 @@ public class CommentFileWriter {
             return;
         }
 
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(file, StandardCharsets.UTF_8))) {
+        try (BufferedWriter writer = new BufferedWriter(new java.io.FileWriter(file, StandardCharsets.UTF_8))) {
             writer.write(content);
         } catch (IOException e) {
-            throw new RuntimeException("입력 파일 읽기 실패", e);
+            throw new CommentProcessorException(CommentProcessorErrorCode.FILE_WRITE_FAIL,file.getName());
         }
     }
 }

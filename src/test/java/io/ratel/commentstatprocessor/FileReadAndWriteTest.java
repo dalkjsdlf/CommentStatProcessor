@@ -1,14 +1,14 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.module.context.SchoolStatContext;
-import io.ratel.commentstatprocessor.module.constant.StatProcessorConst;
-import io.ratel.commentstatprocessor.module.file.CommentFileReader;
-import io.ratel.commentstatprocessor.module.file.CommentFileWriter;
-import io.ratel.commentstatprocessor.module.reader.CSVCommentReader;
+import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
+import io.ratel.commentstatprocessor.common.constant.AppConst;
+import io.ratel.commentstatprocessor.common.file.FileReader;
+import io.ratel.commentstatprocessor.common.file.FileWriter;
+import io.ratel.commentstatprocessor.domain.schoolstat.reader.CSVCommentReader;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,14 +32,16 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  * 2025. 3. 22.          dorris             최초생성
  */
 @DisplayName("파일을 잘 읽어오는지 확인하기 위한 테스트")
+@Slf4j
 public class FileReadAndWriteTest {
 
     @DisplayName("[성공] 파일을 잘 읽어오는지 확인하기 위한 테스트")
     @Test
     public void givenCsvFile_whenGetReadCommentsInFile_thenSizeGreaterThan0() throws IOException {
         //given
-        ClassPathResource resource = new ClassPathResource("comments.csv");
-        File file = resource.getFile();
+        String inputFilePath = AppConst.DEFAULT_INPUT_DIR + File.separator + AppConst.DEFAULT_INPUT_FILE_NAME;
+        log.debug("inputFilePath >> {} " , inputFilePath);
+        File file = Path.of(inputFilePath).toFile();
         //when
         List<String> commentsFromCsv = CSVCommentReader.read(file.getPath());
 
@@ -51,22 +53,22 @@ public class FileReadAndWriteTest {
     @Test
     public void givenMapCount_whenWriteInTmpFolder_thenCheckFile(@TempDir Path tempDir) throws IOException {
         //given
+        String outputFilePath = AppConst.DEFAULT_RESULT_DIR + File.separator + AppConst.DEFAULT_OUTPUT_FILE_NAME;
+        SchoolStatResultStore.put("충암고등학교");
+        SchoolStatResultStore.put("명성중학교");
+        SchoolStatResultStore.put("선일여자고등학교");
+        SchoolStatResultStore.put("충암고등학교");
 
-        SchoolStatContext.put("충암고등학교");
-        SchoolStatContext.put("명성중학교");
-        SchoolStatContext.put("선일여자고등학교");
-        SchoolStatContext.put("충암고등학교");
-
-        String result = SchoolStatContext.statMapToString();
-        Path testFile = Paths.get("src/test/tmp/" + StatProcessorConst.DEFAULT_OUTPUT_FILE_NAME);
+        String result = SchoolStatResultStore.statMapToString();
+        Path testFile = Paths.get(outputFilePath);
 
         //when
-        CommentFileWriter.writeTextFile(testFile.toFile().getPath(),result, true);
+        FileWriter.writeTextFile(testFile.toFile().getPath(),result, true);
 
         //then
         assertTrue(Files.exists(testFile));
 
-        List<String> resultText = CommentFileReader.readTextFileLines(testFile.toFile().getPath());
+        List<String> resultText = FileReader.readTextFileLines(testFile.toFile().getPath());
         assertThat(resultText.size()).isGreaterThan(0);
     }
 }

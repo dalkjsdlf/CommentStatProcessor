@@ -1,8 +1,8 @@
-package io.ratel.commentstatprocessor.module;
+package io.ratel.commentstatprocessor.domain.schoolstat.processor;
 
-import io.ratel.commentstatprocessor.module.context.SchoolStatContext;
-import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractor;
-import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractorByRegex;
+import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
+import io.ratel.commentstatprocessor.domain.schoolstat.extractor.SchoolNameExtractor;
+import io.ratel.commentstatprocessor.domain.schoolstat.extractor.SchoolNameExtractorByRegex;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.List;
@@ -35,7 +35,7 @@ public class SchoolStatCounter {
         System.out.println();
         log.debug("============================================================");
         for (String school : schools) {
-            SchoolStatContext.put(school);
+            SchoolStatResultStore.put(school);
         }
     }
 }

@@ -1,7 +1,7 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractor;
-import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractorByRegex;
+import io.ratel.commentstatprocessor.domain.schoolstat.extractor.SchoolNameExtractor;
+import io.ratel.commentstatprocessor.domain.schoolstat.extractor.SchoolNameExtractorByRegex;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
