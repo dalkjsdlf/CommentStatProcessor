@@ -1,6 +1,5 @@
-package io.ratel.commentstatprocessor.module.file;
+package io.ratel.commentstatprocessor.common.file;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
@@ -18,7 +17,7 @@ import java.util.List;
  * ================================================
  * 2025. 3. 21.          dorris             최초생성
  */
-public class CommentFileReader {
+public class FileReader {
 
     /**
      * 텍스트 파일을 한 문자열로 읽습니다.

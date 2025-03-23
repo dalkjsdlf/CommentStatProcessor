@@ -1,4 +1,7 @@
-package io.ratel.commentstatprocessor.module.context;
+package io.ratel.commentstatprocessor.domain.schoolstat.store;
+
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorErrorCode;
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorException;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -14,7 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * ================================================
  * 2025. 3. 22.          dorris             최초생성
  */
-public class SchoolStatContext {
+public class SchoolStatResultStore {
     private static final Map<String, Integer> schoolCountMap = new ConcurrentHashMap<>();
 
     public static void put(String school) {
@@ -27,7 +30,7 @@ public class SchoolStatContext {
 
     public static Integer getCount(String schoolName) {
         if(schoolCountMap.isEmpty()) {
-            throw new RuntimeException("통계된 학교명 목록이 없습니다.");
+            throw new CommentProcessorException(CommentProcessorErrorCode.SCHOOL_NOT_FILE_IN_RESULT);
         }
 
         Integer count = schoolCountMap.get(schoolName);

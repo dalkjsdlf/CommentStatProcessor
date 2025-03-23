@@ -1,4 +1,4 @@
-package io.ratel.commentstatprocessor.module.extractor;
+package io.ratel.commentstatprocessor.domain.schoolstat.extractor;
 
 /**
  * packageName  : io.ratel.commentstatprocessor.module

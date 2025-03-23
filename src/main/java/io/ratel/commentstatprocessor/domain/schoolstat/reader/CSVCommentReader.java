@@ -1,15 +1,12 @@
-package io.ratel.commentstatprocessor.module.reader;
+package io.ratel.commentstatprocessor.domain.schoolstat.reader;
 
 import com.opencsv.CSVReader;
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorErrorCode;
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorException;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileReader;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 /**
  * packageName  : io.ratel.commentstatprocessor.module
@@ -38,7 +35,7 @@ public class CSVCommentReader {
                 }
             }
         } catch (Exception e) {
-            throw new RuntimeException("CSV 읽기 실패", e);
+            throw new CommentProcessorException(CommentProcessorErrorCode.CSV_READ_FAILED, e);
         }
 
         return comments;
