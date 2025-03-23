@@ -2,6 +2,7 @@ package io.ratel.commentstatprocessor;
 
 import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractor;
 import io.ratel.commentstatprocessor.module.extractor.SchoolNameExtractorByRegex;
+import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -37,6 +38,7 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 학교이름(공백 및 특수문자포함) 5개추출
 * */
 @DisplayName("SchoolNameExtractorTest")
+@Slf4j
 public class SchoolNameExtractorTest {
 
     private SchoolNameExtractor schoolNameExtractor;
@@ -98,7 +100,7 @@ public class SchoolNameExtractorTest {
         * */
         // when
         List<String> result = schoolNameExtractor.execute(comment);
-        System.out.println(">>>> "+result);
+        log.debug(">>>> {}",result);
         // then
         assertThat(result).containsAll(expectedSchools);
     }
@@ -151,7 +153,6 @@ public class SchoolNameExtractorTest {
     }
 
     private static Stream<Arguments> selectCase(String caseNumber) {
-        System.out.println();
         return provideCommentsAndExpectedSchools()
                 .filter(args -> caseNumber.equals(args.get()[0]))
                 .map(args -> Arguments.of(args.get()[1], args.get()[2]));

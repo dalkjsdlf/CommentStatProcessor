@@ -1,6 +1,6 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.module.SchoolStatContext;
+import io.ratel.commentstatprocessor.module.context.SchoolStatContext;
 import io.ratel.commentstatprocessor.module.constant.StatProcessorConst;
 import io.ratel.commentstatprocessor.module.file.CommentFileReader;
 import io.ratel.commentstatprocessor.module.file.CommentFileWriter;
@@ -11,7 +11,6 @@ import org.junit.jupiter.api.io.TempDir;
 import org.springframework.core.io.ClassPathResource;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
