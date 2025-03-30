@@ -22,7 +22,7 @@ public class CommentPreprocessor {
         if (comment == null || comment.isBlank()) return "";
 
         // 특수문자 제거 (한글, 숫자, 영문, 공백만 남김)
-        String cleaned = comment.replaceAll("[^가-힣a-zA-Z0-9\\s]", " ");
+        String cleaned = comment.replaceAll("[^가-힣a-zA-Z0-9\\s]", "");
 
         // 다중 공백 제거
         cleaned = cleaned.replaceAll("\\s+", " ").trim();

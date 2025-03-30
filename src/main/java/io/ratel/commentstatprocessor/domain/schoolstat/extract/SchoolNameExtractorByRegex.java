@@ -1,5 +1,9 @@
 package io.ratel.commentstatprocessor.domain.schoolstat.extractor;
 
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorErrorCode;
+import io.ratel.commentstatprocessor.common.exception.CommentProcessorException;
+import io.ratel.commentstatprocessor.common.validation.CommentValidator;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -42,6 +46,10 @@ public class SchoolNameExtractorByRegex implements SchoolNameExtractor {
 
     @Override
     public List<String> execute(String comment) {
+
+        // comment null 검사
+        CommentValidator.validateNotNull(comment);
+
         List<String> result = new ArrayList<>();
 
         // 1. 전처리: 특수문자 제거 및 공백 정리
