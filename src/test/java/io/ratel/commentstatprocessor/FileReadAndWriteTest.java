@@ -43,7 +43,7 @@ public class FileReadAndWriteTest {
         log.debug("inputFilePath >> {} " , inputFilePath);
         File file = Path.of(inputFilePath).toFile();
         //when
-        List<String> commentsFromCsv = CSVCommentReader.read(file.getPath());
+        List<String> commentsFromCsv = CSVCommentReader.readByCell(file.getPath());
 
         //then
         assertThat(commentsFromCsv.size()).isGreaterThan(0);
@@ -53,7 +53,7 @@ public class FileReadAndWriteTest {
     @Test
     public void givenMapCount_whenWriteInTmpFolder_thenCheckFile(@TempDir Path tempDir) throws IOException {
         //given
-        String outputFilePath = AppConst.DEFAULT_RESULT_DIR + File.separator + AppConst.DEFAULT_OUTPUT_FILE_NAME;
+        String outputFilePath = AppConst.DEFAULT_OUTPUT_FILE_NAME + File.separator + AppConst.DEFAULT_OUTPUT_FILE_NAME;
         SchoolStatResultStore.put("충암고등학교");
         SchoolStatResultStore.put("명성중학교");
         SchoolStatResultStore.put("선일여자고등학교");

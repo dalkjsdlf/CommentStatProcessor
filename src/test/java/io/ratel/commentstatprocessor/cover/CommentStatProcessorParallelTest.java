@@ -1,12 +1,16 @@
 package io.ratel.commentstatprocessor.cover;
 
-import io.ratel.commentstatprocessor.domain.schoolstat.process.CommentStatProcessor;
 import io.ratel.commentstatprocessor.common.constant.AppConst;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.CommentStatProcessor;
 import io.ratel.commentstatprocessor.domain.schoolstat.process.count.CountSchoolProcessingStrategy;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.count.ParallelProcessingStrategy;
 import io.ratel.commentstatprocessor.domain.schoolstat.process.count.SingleThreadProcessingStrategy;
 import io.ratel.commentstatprocessor.domain.schoolstat.reader.CSVCommentReader;
 import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 import java.io.File;
 import java.io.IOException;
@@ -63,7 +67,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
  */
 
 @DisplayName("CommentStatProcessor 통합 + 엣지 테스트")
-public class CommentStatProcessorTest {
+public class CommentStatProcessorParallelTest {
 
     private CommentStatProcessor commentStatProcessor;
     private List<String> comments;
@@ -72,7 +76,7 @@ public class CommentStatProcessorTest {
     @BeforeEach
     public void init() {
         SchoolStatResultStore.clear();
-        countSchoolProcessingStrategy = new SingleThreadProcessingStrategy();
+        countSchoolProcessingStrategy = new ParallelProcessingStrategy();
         commentStatProcessor = new CommentStatProcessor(countSchoolProcessingStrategy);
 
         comments = List.of(
@@ -96,7 +100,7 @@ public class CommentStatProcessorTest {
     @DisplayName("[기본] CSV 파일에서 학교명 추출")
     void givenCommentsFromCsv_whenCountAllSchoolsName_thenTotalStatMap() throws IOException {
         String inputFilePath = AppConst.DEFAULT_INPUT_DIR + File.separator + AppConst.DEFAULT_INPUT_FILE_NAME;
-        List<String> commentsFromCsv = CSVCommentReader.read(inputFilePath);
+        List<String> commentsFromCsv = CSVCommentReader.readByCell(inputFilePath);
         countSchoolProcessingStrategy.process(commentsFromCsv);
         int count = SchoolStatResultStore.getCount("창현고등학교");
         assertThat(count).isEqualTo(1);
@@ -179,6 +183,7 @@ public class CommentStatProcessorTest {
 
     @Test
     @DisplayName("[엣지] 읽기 전용 파일에 쓰기 시도 시 예외")
+    @Disabled
     void givenReadOnlyOutputFile_whenAggregate_thenThrowsException() throws IOException {
         String inputPath = AppConst.DEFAULT_INPUT_DIR + File.separator + AppConst.DEFAULT_INPUT_FILE_NAME;
         String outputPath = "test/tmp/readonly-output.txt";

@@ -1,4 +1,9 @@
-package io.ratel.commentstatprocessor.domain.schoolstat.processor;
+package io.ratel.commentstatprocessor.domain.schoolstat.process.count;
+
+import io.ratel.commentstatprocessor.common.constant.AppConst;
+import io.ratel.commentstatprocessor.domain.extern.fetcher.SchoolFetcher;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.SchoolStatCounter;
+import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolInfoLoader;
 
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
@@ -17,8 +22,14 @@ import java.util.concurrent.Executors;
  * 2025. 3. 23.          dorris             최초생성
  */
 public class ParallelProcessingStrategy implements CountSchoolProcessingStrategy {
+
     @Override
     public void process(List<String> comments) {
+
+
+        // 학교정보 불러오기
+        SchoolInfoLoader.loadOfficialSchoolNames();
+
         SchoolStatCounter counter = new SchoolStatCounter();
         ExecutorService executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
 

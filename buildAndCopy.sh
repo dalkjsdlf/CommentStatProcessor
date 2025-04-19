@@ -35,7 +35,7 @@ cat <<EOF > execute/run.sh
 #!/bin/bash
 java -jar CommentStatProcessor-0.0.1-SNAPSHOT.jar \\
   --input=input/comments.csv \\
-  --output=result/output.txt \\
+  --output=result/result.txt \\
   --loglevel=INFO
 EOF
 

@@ -1,4 +1,4 @@
-package io.ratel.commentstatprocessor.domain.schoolstat.extractor;
+package io.ratel.commentstatprocessor.domain.schoolstat.extract;
 
 import java.util.List;
 

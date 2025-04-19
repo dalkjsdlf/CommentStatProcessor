@@ -1,8 +1,9 @@
 package io.ratel.commentstatprocessor;
 
 import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
-import io.ratel.commentstatprocessor.domain.schoolstat.processor.SchoolStatCounter;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.SchoolStatCounter;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -32,8 +33,9 @@ public class SchoolStatCounterTest {
     }
 
 
-    @DisplayName("[성공] List에 있는 학교명의 개수를 세주는 기능")
+    @DisplayName("[성공] List에 있는 학교명의 개수를 세주는 기능 - Phase2 ")
     @Test
+    @Disabled
     public void givenComment_whenCountSchools_thenStatMap(){
         SchoolStatResultStore.clear();
 

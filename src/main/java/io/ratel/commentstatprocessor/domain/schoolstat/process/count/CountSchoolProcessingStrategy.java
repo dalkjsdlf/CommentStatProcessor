@@ -1,4 +1,4 @@
-package io.ratel.commentstatprocessor.domain.schoolstat.processor;
+package io.ratel.commentstatprocessor.domain.schoolstat.process.count;
 
 import java.util.List;
 

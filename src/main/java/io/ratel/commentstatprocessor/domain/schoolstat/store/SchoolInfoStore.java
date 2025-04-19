@@ -3,7 +3,9 @@ package io.ratel.commentstatprocessor.domain.schoolstat.store;
 import io.ratel.commentstatprocessor.common.exception.CommentProcessorErrorCode;
 import io.ratel.commentstatprocessor.common.exception.CommentProcessorException;
 
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -17,46 +19,26 @@ import java.util.concurrent.ConcurrentHashMap;
  * ================================================
  * 2025. 3. 22.          dorris             최초생성
  */
-public class SchoolStatResultStore {
-    private static final Map<String, Integer> schoolCountMap = new ConcurrentHashMap<>();
+public class SchoolInfoStore {
+    private static final Set<String> schoolInfoSet = new HashSet<>();
 
-    public static void put(String school) {
-        schoolCountMap.merge(school, 1, Integer::sum);
+    public static void add(String school) {
+        schoolInfoSet.add(school);
     }
 
-    public static Map<String, Integer> getMap() {
-        return schoolCountMap;
+    public static Set<String> getSet() {
+        return schoolInfoSet;
     }
 
-    public static Integer getCount(String schoolName) {
-        if(schoolCountMap.isEmpty()) {
-            throw new CommentProcessorException(CommentProcessorErrorCode.SCHOOL_NOT_FILE_IN_RESULT);
+    public static boolean isContains(String schoolName) {
+        if(schoolInfoSet.isEmpty()) {
+            throw new CommentProcessorException(CommentProcessorErrorCode.SCHOOL_NOT_EXIST_IN_INFO_SET);
         }
 
-        Integer count = schoolCountMap.get(schoolName);
-
-        if(count == null) return 0;
-        else return count;
-    }
-
-    public static void displayMap() {
-        System.out.println();
-        for(String schoolName : schoolCountMap.keySet()) {
-            int count = schoolCountMap.get(schoolName);
-            System.out.printf("%s\t%d \n", schoolName, count);
-        }
-        System.out.println();
+        return schoolInfoSet.contains(schoolName);
     }
 
     public static void clear() {
-        schoolCountMap.clear();
-    }
-
-    public static String statMapToString() {
-        StringBuilder sb = new StringBuilder();
-        for (Map.Entry<String, Integer> entry : schoolCountMap.entrySet()) {
-            sb.append(entry.getKey()).append("\t").append(entry.getValue()).append("\n");
-        }
-        return sb.toString();
+        schoolInfoSet.clear();
     }
 }

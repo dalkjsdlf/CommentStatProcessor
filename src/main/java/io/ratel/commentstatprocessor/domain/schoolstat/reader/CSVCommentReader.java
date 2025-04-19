@@ -21,8 +21,7 @@ import java.util.List;
  */
 public class CSVCommentReader {
 
-
-    public static List<String> read(String filePath) {
+    public static List<String> readByCell(String filePath) {
         List<String> comments = new ArrayList<>();
 
         try (CSVReader csvReader = new CSVReader(new FileReader(filePath))) {

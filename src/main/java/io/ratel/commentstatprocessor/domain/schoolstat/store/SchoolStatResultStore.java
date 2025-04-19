@@ -35,7 +35,7 @@ public class SchoolStatResultStore {
 
         Integer count = schoolCountMap.get(schoolName);
 
-        if(count.describeConstable().isEmpty()) return 0;
+        if(count == null) return 0;
         else return count;
     }
 

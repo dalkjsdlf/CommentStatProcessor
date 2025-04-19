@@ -1,13 +1,13 @@
-package io.ratel.commentstatprocessor;
+package io.ratel.commentstatprocessor.cover;
 
-import io.ratel.commentstatprocessor.module.extern.SchoolFetcher;
+import io.ratel.commentstatprocessor.domain.extern.fetcher.SchoolFetcher;
+import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolInfoStore;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 
-import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -23,13 +23,14 @@ import static org.assertj.core.api.Assertions.assertThat;
  * 2025. 3. 21.          dorris             최초생성
  */
 @DisplayName("OPEN API로 학교명을 가져오는 테스트")
-@SpringBootTest
+@Disabled
 public class LoadSchoolNameTest {
 
-    private final SchoolFetcher schoolFetcher;
+    private SchoolFetcher schoolFetcher;
 
-    public LoadSchoolNameTest(@Autowired SchoolFetcher schoolFetcher) {
-        this.schoolFetcher = schoolFetcher;
+    @BeforeEach
+    public void init () {
+        schoolFetcher = new SchoolFetcher();
     }
 
     @DisplayName("학교정보를 불러온다.")
@@ -37,13 +38,13 @@ public class LoadSchoolNameTest {
     public void givenPageSize_whenGetSchoolName_then(){
         //given
         String searchName = "충암고등학교";
-        int pageSize = 100;
+        int pageSize = 1000;
 
+        SchoolInfoStore.clear();
         //when
-        Map<String, List<String>> schools = schoolFetcher.fetchAllSchools(pageSize);
-
+        SchoolFetcher.fetchAllSchools(pageSize);
         //then
-        assertThat(schools.get(searchName)).isNotNull();
+        assertThat(SchoolInfoStore.isContains(searchName)).isTrue();
 
     }
 }

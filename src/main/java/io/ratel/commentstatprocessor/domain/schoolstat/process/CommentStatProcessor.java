@@ -1,6 +1,8 @@
-package io.ratel.commentstatprocessor.domain.schoolstat.processor;
+package io.ratel.commentstatprocessor.domain.schoolstat.process;
 
 import io.ratel.commentstatprocessor.common.constant.AppConst;
+import io.ratel.commentstatprocessor.domain.extern.fetcher.SchoolFetcher;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.count.CountSchoolProcessingStrategy;
 import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
 import io.ratel.commentstatprocessor.common.file.FileWriter;
 import io.ratel.commentstatprocessor.domain.schoolstat.reader.CSVCommentReader;
@@ -10,7 +12,6 @@ import java.io.File;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.LinkedBlockingQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
@@ -35,46 +36,13 @@ public class CommentStatProcessor {
         countSchoolProcessingStrategy = strategy;
     }
 
-    public void countSchoolsInComments(List<String> comments) {
-        SchoolStatCounter counter = new SchoolStatCounter();
-        for (String comment : comments) {
-            counter.countSchools(comment);
-        }
-    }
-
-    public void countSchoolsInCommentsParallel(List<String> comments) {
-        SchoolStatCounter counter = new SchoolStatCounter();
-
-        // 유동적인 스레드 풀 설정
-        int cores = Runtime.getRuntime().availableProcessors();
-        ExecutorService executor = new ThreadPoolExecutor(
-                cores,                     // 최소 스레드 수
-                cores * 4,                 // 최대 스레드 수
-                60L,                       // idle 스레드 유지 시간
-                TimeUnit.SECONDS,
-                new LinkedBlockingQueue<>()
-        );
-
-        List<CompletableFuture<Void>> futures = comments.stream()
-                .map(comment -> CompletableFuture.runAsync(() -> {
-                    counter.countSchools(comment);
-                }, executor))
-                .toList();
-
-        CompletableFuture.allOf(futures.toArray(new CompletableFuture[0])).join();
-
-        executor.shutdown();
-    }
-
     public void aggregateSchoolCounts() {
         String defInputPath = AppConst.DEFAULT_INPUT_DIR + File.separator + AppConst.DEFAULT_INPUT_FILE_NAME;
         String defOutputPath = AppConst.DEFAULT_OUTPUT_DIR + File.separator + AppConst.DEFAULT_OUTPUT_FILE_NAME;
+
         aggregateSchoolCounts(defInputPath, defOutputPath, true);
     }
 
-    /**
-     *
-     * */
     public void aggregateSchoolCounts(String inputPath, String outputPath, boolean overwrite) {
         /*
          * CSV 파일읽기 시작
@@ -82,7 +50,7 @@ public class CommentStatProcessor {
         log.info("==================================================");
         log.info("CSV 파일 읽기 시작");
         log.info("--------------------------------------------------");
-        List<String> comments = CSVCommentReader.read(inputPath);
+        List<String> comments = CSVCommentReader.readByCell(inputPath);
         log.info("--------------------------------------------------");
         log.info("CSV 파일 읽기완료");
         log.info("총 댓글 건수 : {}",comments.size());
@@ -98,6 +66,7 @@ public class CommentStatProcessor {
         log.info("--------------------------------------------------");
         log.info("학교명 카운팅 완료");
         log.info("==================================================");
+
 
         log.info("==================================================");
         log.info("학교명 카운팅 결과 출력");

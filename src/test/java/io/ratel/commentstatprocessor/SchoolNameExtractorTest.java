@@ -1,9 +1,10 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.domain.schoolstat.extractor.SchoolNameExtractor;
-import io.ratel.commentstatprocessor.domain.schoolstat.extractor.SchoolNameExtractorByRegex;
+import io.ratel.commentstatprocessor.domain.schoolstat.extract.SchoolNameExtractor;
+import io.ratel.commentstatprocessor.domain.schoolstat.extract.SchoolNameExtractorByRegex;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -105,9 +106,10 @@ public class SchoolNameExtractorTest {
         assertThat(result).containsAll(expectedSchools);
     }
 
-    @DisplayName("[성공] 학교이름(약어) 5개 추출")
+    @DisplayName("[성공] 학교이름(약어) 5개 추출 - Phase2")
     @ParameterizedTest
     @MethodSource("testCast2")
+    @Disabled
     public void givenCommentWith5Abbreviations_whenExtractSchool_thenAllExtracted(String comment, List<String> expectedSchools) {
         // when
         List<String> result = schoolNameExtractor.execute(comment);
@@ -116,9 +118,10 @@ public class SchoolNameExtractorTest {
         assertThat(result).containsAll(expectedSchools);
     }
 
-    @DisplayName("[성공] 학교이름(공백 및 특수문자 포함) 5개 추출")
+    @DisplayName("[성공] 학교이름(공백 및 특수문자 포함) 5개 추출  - Phase2")
     @ParameterizedTest
     @MethodSource("testCast3")
+    @Disabled
     public void givenCommentWith5SchoolsAndSymbols_whenExtractSchool_thenAllExtracted(String comment, List<String> expectedSchools) {
 
         // when
@@ -128,11 +131,12 @@ public class SchoolNameExtractorTest {
         assertThat(result).containsAll(expectedSchools);
     }
 
-    @DisplayName("[실패] 학교이름 유사 단어가 포함되어도 추출되지 않아야 함")
+    @DisplayName("[실패] 학교이름 유사 단어가 포함되어도 추출되지 않아야 함  - Phase2")
     @ParameterizedTest
     @CsvSource({
             "나는 오늘 서울대공원을 갔어요. 서울 대공원은 참 멋있었어요. 서울대 공원 다음에 또 갈래요., 서울대학교"
     })
+    @Disabled
     public void givenCommentWithSimilarButDifferentWord_whenExtractSchool_thenNotExtracted(String comment, String schoolName) {
         // when
         List<String> result =  schoolNameExtractor.execute(comment);

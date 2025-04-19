@@ -1,7 +1,9 @@
 package io.ratel.commentstatprocessor;
 
-import io.ratel.commentstatprocessor.domain.schoolstat.processor.CommentStatProcessor;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.CommentStatProcessor;
 import io.ratel.commentstatprocessor.common.constant.AppConst;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.count.CountSchoolProcessingStrategy;
+import io.ratel.commentstatprocessor.domain.schoolstat.process.count.SingleThreadProcessingStrategy;
 import io.ratel.commentstatprocessor.domain.schoolstat.store.SchoolStatResultStore;
 import io.ratel.commentstatprocessor.domain.schoolstat.reader.CSVCommentReader;
 import org.junit.jupiter.api.BeforeEach;
@@ -31,10 +33,12 @@ public class CommentStatProcessorTest {
 
     private CommentStatProcessor commentStatProcessor;
     private List<String> comments;
-
+    CountSchoolProcessingStrategy countSchoolProcessingStrategy;
     @BeforeEach
     public void init () {
-        commentStatProcessor = new CommentStatProcessor();
+        SchoolStatResultStore.clear();
+        countSchoolProcessingStrategy = new SingleThreadProcessingStrategy();
+        commentStatProcessor = new CommentStatProcessor(new SingleThreadProcessingStrategy());
         comments = List.of(
                 "서울대학교, 연세대학교, 고려대학교, 부산고등학교, 충암고등학교에서 모임합니다.",
                 "서울대, 연대, 고대, 부산고, 충암고",
@@ -48,11 +52,10 @@ public class CommentStatProcessorTest {
     @Test
     public void givenCommentsOfHardCoding_whenCountAllSchoolsName_thenTotalStatMap(){
         //given
-
         String schoolNameForValidation = "충암고등학교";
 
         //when
-        commentStatProcessor.countSchoolsInComments(comments);
+        countSchoolProcessingStrategy.process(comments);
         SchoolStatResultStore.displayMap();
         int count = SchoolStatResultStore.getCount(schoolNameForValidation);
 
@@ -69,10 +72,27 @@ public class CommentStatProcessorTest {
         String inputFilePath = AppConst.DEFAULT_INPUT_DIR + File.separator + AppConst.DEFAULT_INPUT_FILE_NAME;
         File file = Path.of(inputFilePath).toFile();
         //when
-        List<String> commentsFromCsv = CSVCommentReader.read(file.getPath());
+        List<String> commentsFromCsv = CSVCommentReader.readByCell(file.getPath());
         //when
-        commentStatProcessor.countSchoolsInComments(commentsFromCsv);
+        countSchoolProcessingStrategy.process(commentsFromCsv);
         SchoolStatResultStore.displayMap();
+        int count = SchoolStatResultStore.getCount(schoolNameForValidation);
+
+        //then
+        assertThat(count).isEqualTo(1);
+    }
+
+    @DisplayName("[성공] CommentStatProcessor 메인 테스트")
+    @Test
+    public void givenCsvFile_whenCountProcessor_thenGetResultTxt() throws IOException {
+        //given
+
+        String schoolNameForValidation = "창현고등학교";
+        //when
+        commentStatProcessor.aggregateSchoolCounts();
+
+        //when
+
         int count = SchoolStatResultStore.getCount(schoolNameForValidation);
 
         //then
